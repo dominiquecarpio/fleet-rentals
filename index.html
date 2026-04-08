@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Rentals USA – Detroit's Premier Vehicle Rental</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Barlow+Condensed:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C9A84C;
+            --gold-light: #E5C86A;
+            --gold-dark: #8A6B2A;
+            --silver: #B8C4CC;
+            --silver-light: #D8E2E8;
+            --black: #0A0A0B;
+            --black-mid: #111113;
+            --black-card: #161618;
+            --black-border: #222226;
+            --white: #F4F1EC;
+            --text-muted: #6B6B75;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Barlow', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* ─────────────────────────────────────────
+     LOADING SCREEN
+  ───────────────────────────────────────── */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+
+        #loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            height: 110px;
+            filter: drop-shadow(0 0 40px rgba(201, 168, 76, 0.5));
+            animation: loaderLogoPulse 1.8s ease-in-out infinite;
+            margin-bottom: 36px;
+        }
+
+        @keyframes loaderLogoPulse {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 30px rgba(201, 168, 76, 0.35));
+                transform: scale(1);
+            }
+
+            50% {
+                filter: drop-shadow(0 0 60px rgba(201, 168, 76, 0.7));
+                transform: scale(1.04);
+            }
+        }
+
+        .loader-bar-wrap {
+            width: 220px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .loader-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold));
+            width: 0%;
+            animation: loadProgress 1.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes loadProgress {
+            0% {
+                width: 0%
+            }
+
+            60% {
+                width: 70%
+            }
+
+            85% {
+                width: 90%
+            }
+
+            100% {
+                width: 100%
+            }
+        }
+
+        .loader-text {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            animation: loaderTextBlink 1.4s ease-in-out infinite;
+        }
+
+        @keyframes loaderTextBlink {
+
+            0%,
+            100% {
+                opacity: 0.4
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        .loader-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .loader-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.3;
+            }
+
+            100% {
+                transform: translateY(-100px) translateX(var(--drift)) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* ─────────────────────────────────────────
+     NAV
+  ───────────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 60px;
+            background: linear-gradient(to bottom, rgba(10, 10, 11, 0.97) 0%, transparent 100%);
+            backdrop-filter: blur(4px);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+            transition: background 0.4s, backdrop-filter 0.4s;
+        }
+
+        .nav-logo {
+            height: 54px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 15px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--silver);
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-cta {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 12px 28px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background 0.25s, transform 0.2s;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+
+        .nav-cta:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* ─────────────────────────────────────────
+     HERO
+  ───────────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 40px 80px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 50% 30%, rgba(201, 168, 76, 0.09) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 80% at 80% 80%, rgba(184, 196, 204, 0.04) 0%, transparent 60%),
+                var(--black);
+        }
+
+        /* Animated grid overlay */
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
+            background-size: 80px 80px;
+            animation: gridDrift 20s linear infinite;
+            mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
+        }
+
+        @keyframes gridDrift {
+            from {
+                background-position: 0 0
+            }
+
+            to {
+                background-position: 80px 80px
+            }
+        }
+
+        .road-lines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .road-lines::before,
+        .road-lines::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -20px;
+            width: 4px;
+            background: repeating-linear-gradient(to top, var(--gold) 0px, var(--gold) 40px, transparent 40px, transparent 80px);
+            transform: translateX(-50%);
+            animation: roadScroll 2.5s linear infinite;
+            opacity: 0.18;
+        }
+
+        .road-lines::before {
+            height: 200%;
+        }
+
+        .road-lines::after {
+            left: calc(50% - 80px);
+            height: 200%;
+            opacity: 0.07;
+            animation-delay: -1.25s;
+        }
+
+        @keyframes roadScroll {
+            from {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            to {
+                transform: translateX(-50%) translateY(80px);
+            }
+        }
+
+        /* floating orbs */
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(60px);
+        }
+
+        .hero-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(201, 168, 76, 0.07);
+            top: -100px;
+            right: -100px;
+            animation: orbDrift 12s ease-in-out infinite alternate;
+        }
+
+        .hero-orb-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(184, 196, 204, 0.05);
+            bottom: -60px;
+            left: -60px;
+            animation: orbDrift 16s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes orbDrift {
+            from {
+                transform: translate(0, 0)
+            }
+
+            to {
+                transform: translate(40px, 30px)
+            }
+        }
+
+        .hero-logo {
+            height: 150px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 0 50px rgba(201, 168, 76, 0.45));
+            animation: logoIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes logoIn {
+            from {
+                opacity: 0;
+                transform: translateY(-40px) scale(0.85);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .hero-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 15px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 0.9s 0.3s both;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(80px, 12vw, 160px);
+            line-height: 0.9;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--white) 0%, var(--gold-light) 40%, var(--silver-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 0.9s 0.45s both;
+        }
+
+        .hero-sub {
+            font-size: 17px;
+            letter-spacing: 1.5px;
+            color: var(--silver);
+            margin-top: 22px;
+            max-width: 520px;
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 0.9s 0.6s both;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 46px;
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 0.9s 0.75s both;
+        }
+
+        .btn-primary {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 15px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 17px 44px;
+            cursor: pointer;
+            transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(201, 168, 76, 0.25);
+        }
+
+        .btn-outline {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 15px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+            background: transparent;
+            color: var(--silver);
+            border: 1px solid rgba(184, 196, 204, 0.35);
+            padding: 17px 44px;
+            cursor: pointer;
+            transition: border-color 0.25s, color 0.25s, transform 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 2;
+            opacity: 0.45;
+            animation: fadeIn 1s 1.5s both;
+        }
+
+        .hero-scroll span {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--silver);
+        }
+
+        .scroll-arrow {
+            width: 22px;
+            height: 22px;
+            border-right: 1px solid var(--silver);
+            border-bottom: 1px solid var(--silver);
+            transform: rotate(45deg);
+            animation: bounce 1.8s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: rotate(45deg) translateY(0)
+            }
+
+            50% {
+                transform: rotate(45deg) translateY(7px)
+            }
+        }
+
+        /* ─────────────────────────────────────────
+     STATS BAR — CINEMATIC REIMAGINED
+  ───────────────────────────────────────── */
+        .stats-bar {
+            position: relative;
+            overflow: hidden;
+            min-height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Full-bleed background photo */
+        .stats-bar-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1800&q=80&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center 40%;
+            filter: brightness(0.28) saturate(0.7);
+            transform: scale(1.04);
+            transition: transform 12s ease;
+        }
+
+        .stats-bar:hover .stats-bar-bg {
+            transform: scale(1.00);
+        }
+
+        /* layered overlays */
+        .stats-bar-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg,
+                    rgba(10, 10, 11, 0.82) 0%,
+                    rgba(10, 10, 11, 0.35) 30%,
+                    rgba(10, 10, 11, 0.35) 70%,
+                    rgba(10, 10, 11, 0.82) 100%),
+                linear-gradient(to bottom,
+                    rgba(10, 10, 11, 0.6) 0%,
+                    transparent 40%,
+                    transparent 60%,
+                    rgba(10, 10, 11, 0.6) 100%);
+        }
+
+        /* scanline grain texture */
+        .stats-bar-grain {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.06) 2px,
+                    rgba(0, 0, 0, 0.06) 4px);
+            z-index: 1;
+        }
+
+        /* gold top + bottom border lines */
+        .stats-bar::before,
+        .stats-bar::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            z-index: 4;
+            background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent 100%);
+            animation: borderPulse 4s ease-in-out infinite;
+        }
+
+        .stats-bar::before {
+            top: 0;
+        }
+
+        .stats-bar::after {
+            bottom: 0;
+            animation-delay: 2s;
+        }
+
+        @keyframes borderPulse {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .stats-inner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .stat {
+            padding: 52px 36px;
+            text-align: center;
+            position: relative;
+            cursor: default;
+            overflow: hidden;
+        }
+
+        /* vertical divider lines */
+        .stat+.stat::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(201, 168, 76, 0.35), transparent);
+        }
+
+        /* hover shimmer wash */
+        .stat::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .stat:hover::after {
+            opacity: 1;
+        }
+
+        /* icon above number */
+        .stat-icon {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 10px;
+            opacity: 0.7;
+            filter: grayscale(0.3);
+            transition: transform 0.35s, opacity 0.35s;
+            line-height: 1;
+        }
+
+        .stat:hover .stat-icon {
+            transform: translateY(-4px) scale(1.15);
+            opacity: 1;
+        }
+
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 72px;
+            line-height: 0.9;
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-light) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 1px;
+        }
+
+        .stat:hover .stat-num {
+            transform: scale(1.06);
+        }
+
+        /* animated underline */
+        .stat-rule {
+            display: block;
+            width: 28px;
+            height: 1.5px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+            margin: 10px auto 10px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), width 0.4s;
+        }
+
+        .stat:hover .stat-rule {
+            transform: scaleX(1);
+            width: 48px;
+        }
+
+        /* auto-reveal when stat enters view */
+        .stat.visible .stat-rule {
+            animation: ruleReveal 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes ruleReveal {
+            from {
+                transform: scaleX(0);
+            }
+
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        .stat-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-top: 4px;
+            opacity: 0.65;
+            transition: opacity 0.3s, letter-spacing 0.3s;
+        }
+
+        .stat:hover .stat-label {
+            opacity: 1;
+            letter-spacing: 3.5px;
+        }
+
+        /* count-up animation values */
+        .stat.visible .stat-num {
+            animation: countPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        .stat.reveal-delay-1.visible .stat-num {
+            animation-delay: 0.1s;
+        }
+
+        .stat.reveal-delay-2.visible .stat-num {
+            animation-delay: 0.2s;
+        }
+
+        .stat.reveal-delay-3.visible .stat-num {
+            animation-delay: 0.3s;
+        }
+
+        .stat.reveal-delay-1.visible .stat-icon {
+            animation-delay: 0.1s;
+        }
+
+        .stat.reveal-delay-2.visible .stat-icon {
+            animation-delay: 0.2s;
+        }
+
+        .stat.reveal-delay-3.visible .stat-icon {
+            animation-delay: 0.3s;
+        }
+
+        .stat.reveal-delay-1.visible .stat-rule {
+            animation-delay: 0.4s;
+        }
+
+        .stat.reveal-delay-2.visible .stat-rule {
+            animation-delay: 0.5s;
+        }
+
+        .stat.reveal-delay-3.visible .stat-rule {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes countPop {
+            from {
+                transform: scale(0.7) translateY(12px);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .stat.visible .stat-icon {
+            animation: iconDrop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        @keyframes iconDrop {
+            from {
+                transform: translateY(-16px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+        }
+
+        /* ─────────────────────────────────────────
+     SECTIONS
+  ───────────────────────────────────────── */
+        section {
+            padding: 100px 60px;
+        }
+
+        .section-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(52px, 6.5vw, 88px);
+            letter-spacing: 1px;
+            line-height: 0.95;
+            background: linear-gradient(135deg, var(--white) 0%, var(--silver-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 22px;
+        }
+
+        .section-body {
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--silver);
+            max-width: 560px;
+        }
+
+        /* ─────────────────────────────────────────
+     FLEET
+  ───────────────────────────────────────── */
+        .fleet-section {
+            background: var(--black-mid);
+        }
+
+        .fleet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* ── FLEET CATEGORY CARDS (cinematic) ── */
+        .fleet-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3px;
+            margin-bottom: 70px;
+        }
+
+        @media (max-width: 1100px) {
+            .fleet-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .fleet-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fleet-card {
+            position: relative;
+            overflow: hidden;
+            height: 420px;
+            cursor: default;
+            background: var(--black-card);
+            border: 1px solid var(--black-border);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s;
+        }
+
+        .fleet-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Video / SVG fills the card */
+        .fleet-card-visual {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fleet-card:hover .fleet-card-visual {
+            transform: scale(1.04);
+        }
+
+        /* dark gradient overlay on top of SVG */
+        .fleet-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top,
+                    rgba(5, 5, 6, 0.97) 0%,
+                    rgba(5, 5, 6, 0.65) 45%,
+                    rgba(5, 5, 6, 0.15) 100%);
+            transition: background 0.4s;
+        }
+
+        .fleet-card:hover .fleet-card-overlay {
+            background: linear-gradient(to top,
+                    rgba(5, 5, 6, 0.99) 0%,
+                    rgba(5, 5, 6, 0.72) 50%,
+                    rgba(5, 5, 6, 0.22) 100%);
+        }
+
+        /* gold top accent line */
+        .fleet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            z-index: 4;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transform: scaleX(0);
+            transition: transform 0.45s;
+        }
+
+        .fleet-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .fleet-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 36px 32px;
+            z-index: 3;
+            transform: translateY(8px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fleet-card:hover .fleet-card-content {
+            transform: translateY(0);
+        }
+
+        .fleet-card-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 80px;
+            line-height: 1;
+            letter-spacing: 2px;
+            color: rgba(201, 168, 76, 0.08);
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            z-index: 3;
+            transition: color 0.4s;
+            pointer-events: none;
+        }
+
+        .fleet-card:hover .fleet-card-num {
+            color: rgba(201, 168, 76, 0.14);
+        }
+
+        .fleet-type {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 38px;
+            letter-spacing: 2px;
+            color: var(--white);
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        .fleet-desc {
+            font-size: 14px;
+            color: var(--silver);
+            line-height: 1.65;
+            max-width: 260px;
+            opacity: 0.85;
+        }
+
+        .fleet-tag {
+            display: inline-block;
+            margin-top: 20px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            background: rgba(201, 168, 76, 0.12);
+            color: var(--gold);
+            padding: 6px 16px;
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .fleet-card:hover .fleet-tag {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        /* ─────────────────────────────────────────
+     VEHICLE GRID
+  ───────────────────────────────────────── */
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2px;
+        }
+
+        .vehicle-card {
+            background: var(--black-card);
+            border: 1px solid var(--black-border);
+            overflow: hidden;
+            position: relative;
+            transition: border-color 0.3s, transform 0.35s, box-shadow 0.35s;
+            cursor: pointer;
+            /* clickable for modal */
+        }
+
+        .vehicle-card::after {
+            content: 'View Details';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(201, 168, 76, 0.92) 0%, transparent 100%);
+            color: var(--black);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 15px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 700;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 18px;
+            height: 80px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .vehicle-card:hover {
+            border-color: rgba(201, 168, 76, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .vehicle-card:hover::after {
+            opacity: 1;
+        }
+
+        .vehicle-card:hover .vehicle-img-wrap img {
+            transform: scale(1.08);
+        }
+
+        .vehicle-img-wrap {
+            position: relative;
+            overflow: hidden;
+            height: 210px;
+            background: #0d0d0f;
+        }
+
+        .vehicle-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+            display: block;
+        }
+
+        .vehicle-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: var(--gold);
+            color: var(--black);
+            padding: 5px 12px;
+            font-weight: 700;
+            animation: badgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        @keyframes badgePop {
+            from {
+                transform: scale(0) rotate(-6deg)
+            }
+
+            to {
+                transform: scale(1) rotate(0)
+            }
+        }
+
+        .vehicle-body {
+            padding: 26px 26px 22px;
+        }
+
+        .vehicle-year {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .vehicle-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 30px;
+            letter-spacing: 0.5px;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .vehicle-specs {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'Barlow Condensed', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .vehicle-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--black-border);
+            padding-top: 18px;
+        }
+
+        .vehicle-price {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .vehicle-price-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'Barlow Condensed', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .vehicle-cta {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid rgba(201, 168, 76, 0.35);
+            padding: 9px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .vehicle-cta:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .vehicle-skeleton {
+            background: var(--black-card);
+            border: 1px solid var(--black-border);
+            height: 380px;
+            background: linear-gradient(90deg, var(--black-card) 25%, #1a1a1e 50%, var(--black-card) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+
+        .filter-btn {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--black-border);
+            padding: 10px 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.08);
+        }
+
+        /* ─────────────────────────────────────────
+     VEHICLE MODAL
+  ───────────────────────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(5, 5, 6, 0.88);
+            backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--black-card);
+            border: 1px solid rgba(201, 168, 76, 0.25);
+            max-width: 860px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(40px) scale(0.97);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(201, 168, 76, 0.08);
+        }
+
+        .modal-overlay.open .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+            background: #0d0d0f;
+        }
+
+        .modal-img-wrap {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-img-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to top, var(--black-card), transparent);
+        }
+
+        .modal-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            background: var(--gold);
+            color: var(--black);
+            padding: 6px 14px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            background: rgba(10, 10, 11, 0.8);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            color: var(--white);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, border-color 0.2s;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+        }
+
+        .modal-body {
+            padding: 36px 40px 40px;
+        }
+
+        .modal-eyebrow {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 52px;
+            letter-spacing: 1px;
+            line-height: 1;
+            color: var(--white);
+            margin-bottom: 28px;
+        }
+
+        .modal-specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .modal-spec-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--black-border);
+            padding: 18px 20px;
+            transition: border-color 0.25s;
+        }
+
+        .modal-spec-box:hover {
+            border-color: rgba(201, 168, 76, 0.25);
+        }
+
+        .modal-spec-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .modal-spec-val {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .modal-price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--black-border);
+            padding-top: 28px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .modal-price-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 56px;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-price-note {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .modal-cta {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 15px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 17px 44px;
+            cursor: pointer;
+            transition: background 0.25s, transform 0.2s;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+
+        .modal-cta:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* ─────────────────────────────────────────
+     WHY
+  ───────────────────────────────────────── */
+        .why-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .why-visual {
+            position: relative;
+            height: 460px;
+        }
+
+        .why-box {
+            position: absolute;
+            background: var(--black-card);
+            border: 1px solid var(--black-border);
+            padding: 32px;
+        }
+
+        /* ── MAIN RATING BOX — upgraded with bg photo + shimmer ── */
+        .why-box-main {
+            inset: 0 60px 60px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow: hidden;
+            border-color: rgba(201, 168, 76, 0.25);
+            transition: border-color 0.4s, box-shadow 0.4s;
+        }
+
+        /* Background photo layer */
+        .why-box-main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900&q=80&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center 30%;
+            filter: brightness(0.22) saturate(0.6);
+            transform: scale(1.06);
+            transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        filter 0.5s ease;
+            z-index: 0;
+        }
+
+        /* Dark gradient overlay */
+        .why-box-main::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to top, rgba(10,10,11,0.95) 0%, rgba(10,10,11,0.4) 60%, transparent 100%),
+                linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 60%);
+            z-index: 1;
+        }
+
+        /* Shimmer sweep animation */
+        .why-box-main .rating-shimmer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                105deg,
+                transparent 30%,
+                rgba(201, 168, 76, 0.07) 50%,
+                transparent 70%
+            );
+            background-size: 200% 100%;
+            animation: ratingShimmer 4s ease-in-out infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        @keyframes ratingShimmer {
+            0%   { background-position: -200% 0; }
+            60%  { background-position: 200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Gold border pulse on corners */
+        .why-box-main .rating-corner {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .why-box-main .rating-corner.tl { top: 10px; left: 10px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+        .why-box-main .rating-corner.tr { top: 10px; right: 10px; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+        .why-box-main .rating-corner.bl { bottom: 10px; left: 10px; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+        .why-box-main .rating-corner.br { bottom: 10px; right: 10px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+
+        /* Hover: reveal photo + glow */
+        .why-box-main:hover {
+            border-color: rgba(201, 168, 76, 0.55);
+            box-shadow: 0 0 60px rgba(201, 168, 76, 0.12), 0 0 120px rgba(201, 168, 76, 0.06);
+        }
+        .why-box-main:hover::before {
+            transform: scale(1.0);
+            filter: brightness(0.32) saturate(0.75);
+        }
+
+        /* Content z-index */
+        .why-box-main .rating-content {
+            position: relative;
+            z-index: 4;
+        }
+
+        /* ── ACCENT BOX — animated gold pulse ── */
+        .why-box-accent {
+            right: 0;
+            bottom: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.14), rgba(201, 168, 76, 0.03));
+            border-color: rgba(201, 168, 76, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: background 0.4s, border-color 0.4s, transform 0.35s;
+        }
+
+        .why-box-accent::before {
+            content: '';
+            position: absolute;
+            inset: -40%;
+            background: radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 70%);
+            animation: accentPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes accentPulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50%       { transform: scale(1.2); opacity: 1; }
+        }
+
+        .why-box-accent:hover {
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.22), rgba(201, 168, 76, 0.08));
+            border-color: rgba(201, 168, 76, 0.5);
+            transform: scale(1.04);
+        }
+
+        .why-box-accent span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 80px;
+            color: var(--gold);
+            opacity: 0.5;
+            position: relative;
+            z-index: 1;
+            animation: starFloat 4s ease-in-out infinite;
+            transition: opacity 0.3s, text-shadow 0.3s;
+            text-shadow: 0 0 30px rgba(201,168,76,0.3);
+        }
+
+        .why-box-accent:hover span {
+            opacity: 0.9;
+            text-shadow: 0 0 50px rgba(201,168,76,0.7), 0 0 100px rgba(201,168,76,0.3);
+        }
+
+        @keyframes starFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50%       { transform: translateY(-6px) rotate(8deg); }
+        }
+
+        .why-rating {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 76px;
+            line-height: 1;
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(201,168,76,0.35);
+        }
+
+        .why-rating-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .stars {
+            color: var(--gold);
+            font-size: 20px;
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+            animation: starsGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes starsGlow {
+            0%, 100% { text-shadow: 0 0 8px rgba(201,168,76,0.3); }
+            50%       { text-shadow: 0 0 20px rgba(201,168,76,0.7), 0 0 40px rgba(201,168,76,0.3); }
+        }
+
+        .why-list {
+            list-style: none;
+            margin-top: 32px;
+        }
+
+        .why-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--black-border);
+            font-size: 16px;
+            color: var(--silver);
+            line-height: 1.55;
+        }
+
+        .why-list li:last-child {
+            border-bottom: none;
+        }
+
+        .why-check {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            background: rgba(201, 168, 76, 0.1);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        /* ─────────────────────────────────────────
+     REVIEWS
+  ───────────────────────────────────────── */
+        .reviews-section {
+            position: relative;
+            padding: 100px 60px;
+            overflow: hidden;
+        }
+
+        /* Full-bleed bg photo */
+        .reviews-section-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1507136566006-cfc505b114fc?w=1800&q=80&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center 40%;
+            filter: brightness(0.14) saturate(0.5);
+            transform: scale(1.04);
+            z-index: 0;
+        }
+
+        .reviews-section-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom, rgba(10,10,11,0.85) 0%, rgba(10,10,11,0.55) 50%, rgba(10,10,11,0.9) 100%),
+                linear-gradient(90deg, rgba(10,10,11,0.7) 0%, transparent 30%, transparent 70%, rgba(10,10,11,0.7) 100%);
+            z-index: 1;
+        }
+
+        /* Subtle scanlines */
+        .reviews-section-grain {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
+            z-index: 2;
+        }
+
+        .reviews-section > * {
+            position: relative;
+            z-index: 3;
+        }
+
+        .reviews-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .reviews-header .section-body {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: rgba(22, 22, 24, 0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 42px 38px;
+            position: relative;
+            transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s, background 0.35s;
+            overflow: hidden;
+        }
+
+        /* Animated gold corner accent on hover */
+        .review-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            transition: width 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .review-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 2px; height: 0;
+            background: linear-gradient(180deg, var(--gold), transparent);
+            transition: height 0.45s 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .review-card:hover::before { width: 100%; }
+        .review-card:hover::after  { height: 60px; }
+
+        .review-card:hover {
+            border-color: rgba(201, 168, 76, 0.35);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,168,76,0.06);
+            background: rgba(22, 22, 24, 0.95);
+        }
+
+        /* Inner glow sweep on hover */
+        .review-card .review-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,168,76,0.06) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .review-card:hover .review-glow { opacity: 1; }
+
+        .review-quote {
+            font-size: 48px;
+            color: var(--gold);
+            opacity: 0.22;
+            font-family: Georgia, serif;
+            line-height: 1;
+            margin-bottom: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .review-card:hover .review-quote { opacity: 0.45; }
+
+        .review-text {
+            font-size: 16px;
+            color: var(--silver);
+            line-height: 1.8;
+            font-style: italic;
+            position: relative;
+        }
+
+        .review-author {
+            margin-top: 26px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--white);
+            font-style: normal;
+        }
+
+        .review-stars {
+            color: var(--gold);
+            font-size: 15px;
+            letter-spacing: 3px;
+            margin-bottom: 18px;
+            text-shadow: 0 0 10px rgba(201,168,76,0.4);
+        }
+
+        /* ─────────────────────────────────────────
+     CONTACT
+  ───────────────────────────────────────── */
+        .contact-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--black-border);
+        }
+
+        .contact-item:first-of-type {
+            border-top: 1px solid var(--black-border);
+        }
+
+        .contact-icon {
+            flex-shrink: 0;
+            width: 46px;
+            height: 46px;
+            background: rgba(201, 168, 76, 0.08);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .contact-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .contact-value {
+            font-size: 17px;
+            color: var(--white);
+            line-height: 1.5;
+        }
+
+        .contact-value a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .contact-value a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: var(--black-card);
+            border: 1px solid var(--black-border);
+            color: var(--white);
+            padding: 15px 18px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 15px;
+            font-weight: 300;
+            outline: none;
+            transition: border-color 0.25s;
+            resize: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--gold);
+        }
+
+        .form-group select option {
+            background: var(--black-card);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ─────────────────────────────────────────
+     FOOTER
+  ───────────────────────────────────────── */
+        footer {
+            background: var(--black-card);
+            border-top: 1px solid var(--black-border);
+            padding: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-logo {
+            height: 44px;
+            opacity: 0.75;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-copy {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* ─────────────────────────────────────────
+     DIVIDER & ANIMATIONS
+  ───────────────────────────────────────── */
+        .gold-line {
+            width: 52px;
+            height: 2px;
+            background: var(--gold);
+            margin: 0 0 30px;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 0.45
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .reveal-delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .reveal-delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        .reveal-delay-4 {
+            transition-delay: 0.4s;
+        }
+
+        /* ─────────────────────────────────────────
+     RESPONSIVE
+  ───────────────────────────────────────── */
+        @media (max-width: 900px) {
+            nav {
+                padding: 16px 24px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            section {
+                padding: 70px 24px;
+            }
+
+            .stats-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .why-section {
+                grid-template-columns: 1fr;
+            }
+
+            .why-visual {
+                display: none;
+            }
+
+            .contact-section {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .fleet-header {
+                flex-direction: column;
+            }
+
+            .reviews-section {
+                padding: 70px 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-specs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-body {
+                padding: 24px 24px 30px;
+            }
+
+            .modal-img {
+                height: 240px;
+            }
+
+            .modal-title {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════
+     LOADING SCREEN
+═══════════════════════════════════════ -->
+    <div id="loading-screen">
+        <div class="loader-particles" id="loaderParticles"></div>
+        <img src="images/logo.png" alt="Fleet Rentals USA" class="loader-logo" onerror="this.style.display='none'">
+        <!-- Fallback text logo if image fails -->
+        <div id="loader-text-logo"
+            style="display:none; font-family:'Bebas Neue',sans-serif; font-size:42px; letter-spacing:6px; color:var(--gold); margin-bottom:36px; text-shadow: 0 0 40px rgba(201,168,76,0.5);">
+            FLEET RENTALS USA</div>
+        <div class="loader-bar-wrap">
+            <div class="loader-bar"></div>
+        </div>
+        <div class="loader-text">Loading your fleet…</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+     VEHICLE MODAL
+═══════════════════════════════════════ -->
+    <div class="modal-overlay" id="vehicleModal" role="dialog" aria-modal="true">
+        <div class="modal" id="modalBox">
+            <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+            <div class="modal-img-wrap">
+                <img src="" alt="" class="modal-img" id="modalImg">
+                <div class="modal-img-gradient"></div>
+                <div class="modal-badge" id="modalBadge"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-eyebrow" id="modalEyebrow"></div>
+                <div class="modal-title" id="modalTitle"></div>
+                <div class="modal-specs-grid" id="modalSpecs"></div>
+                <div class="modal-price-row">
+                    <div>
+                        <div class="modal-price-num" id="modalPrice"></div>
+                        <div class="modal-price-note">Asking Price · Inquire for rental rates</div>
+                    </div>
+                    <button class="modal-cta"
+                        onclick="document.getElementById('vehicleModal').classList.remove('open'); document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                        Inquire Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+     NAV
+═══════════════════════════════════════ -->
+    <nav>
+        <img src="images/logo.png" alt="Fleet Rentals USA" class="nav-logo">
+        <ul class="nav-links">
+            <li><a href="#fleet">Fleet</a></li>
+            <li><a href="#why">Why Us</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a
+            Vehicle</button>
+    </nav>
+
+    <!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div class="road-lines"></div>
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <img src="images/logo.png" alt="Fleet Rentals USA" class="hero-logo">
+        <div class="hero-eyebrow">Detroit's Premier Vehicle Rental</div>
+        <h1 class="hero-title">Fleet<br>Rentals<br>USA</h1>
+        <p class="hero-sub">From compact cars to full-size SUVs — flexible short &amp; long-term rentals tailored to
+            your life.</p>
+        <div class="hero-actions">
+            <button class="btn-primary"
+                onclick="document.getElementById('fleet').scrollIntoView({behavior:'smooth'})">Browse Fleet</button>
+            <button class="btn-outline"
+                onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+        <div class="stats-bar-bg"></div>
+        <div class="stats-bar-overlay"></div>
+        <div class="stats-bar-grain"></div>
+        <div class="stats-inner">
+
+            <div class="stat reveal">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-num">4.5★</span>
+                <span class="stat-rule"></span>
+                <div class="stat-label">Customer Rating</div>
+            </div>
+
+            <div class="stat reveal reveal-delay-1">
+                <span class="stat-icon">🚗</span>
+                <span class="stat-num">100+</span>
+                <span class="stat-rule"></span>
+                <div class="stat-label">Vehicles Available</div>
+            </div>
+
+            <div class="stat reveal reveal-delay-2">
+                <span class="stat-icon">📍</span>
+                <span class="stat-num">313</span>
+                <span class="stat-rule"></span>
+                <div class="stat-label">Detroit Area Code</div>
+            </div>
+
+            <div class="stat reveal reveal-delay-3">
+                <span class="stat-icon">🕐</span>
+                <span class="stat-num">24/7</span>
+                <span class="stat-rule"></span>
+                <div class="stat-label">Customer Support</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FLEET TYPES -->
+    <section class="fleet-section" id="fleet">
+        <div class="fleet-header reveal">
+            <div>
+                <div class="section-eyebrow">Available Inventory</div>
+                <h2 class="section-title">Browse Our<br>Fleet</h2>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-end;">
+                <p class="section-body" style="max-width:340px;text-align:right;">From compact sedans to full-size SUVs
+                    — all maintained, inspected, and ready to go.</p>
+            </div>
+        </div>
+
+        <div class="fleet-grid">
+
+            <!-- SEDAN -->
+            <div class="fleet-card reveal">
+                <video class="fleet-card-visual" autoplay muted loop playsinline>
+                    <source src="videos/Sedans.mp4" type="video/mp4">
+                </video>
+                <div class="fleet-card-overlay"></div>
+                <div class="fleet-card-num">01</div>
+                <div class="fleet-card-content">
+                    <div class="fleet-type">Sedans</div>
+                    <div class="fleet-desc">Sleek, fuel-efficient, and refined — built for city streets and open
+                        highways alike.</div>
+                    <div class="fleet-tag">From $18,500</div>
+                </div>
+            </div>
+
+            <!-- SUV -->
+            <div class="fleet-card reveal reveal-delay-1">
+                <video class="fleet-card-visual" autoplay muted loop playsinline>
+                    <source src="videos/SUVs.mp4" type="video/mp4">
+                </video>
+                <div class="fleet-card-overlay"></div>
+                <div class="fleet-card-num">02</div>
+                <div class="fleet-card-content">
+                    <div class="fleet-type">SUVs</div>
+                    <div class="fleet-desc">Commanding presence, spacious interiors, and capability for every adventure.
+                    </div>
+                    <div class="fleet-tag">From $19,900</div>
+                </div>
+            </div>
+
+            <!-- TRUCK -->
+            <div class="fleet-card reveal reveal-delay-2">
+                <video class="fleet-card-visual" autoplay muted loop playsinline>
+                    <source src="videos/truck.mp4" type="video/mp4">
+                </video>
+                <div class="fleet-card-overlay"></div>
+                <div class="fleet-card-num">03</div>
+                <div class="fleet-card-content">
+                    <div class="fleet-type">Trucks</div>
+                    <div class="fleet-desc">Tow-ready, trail-tough, and built for every job Detroit can throw at it.
+                    </div>
+                    <div class="fleet-tag">From $33,900</div>
+                </div>
+            </div>
+
+            <!-- MINIVAN -->
+            <div class="fleet-card reveal reveal-delay-3">
+                <video class="fleet-card-visual" autoplay muted loop playsinline>
+                    <source src="videos/minivan.mp4" type="video/mp4">
+                </video>
+                <div class="fleet-card-overlay"></div>
+                <div class="fleet-card-num">04</div>
+                <div class="fleet-card-content">
+                    <div class="fleet-type">Minivans</div>
+                    <div class="fleet-desc">Up to 8 passengers — the ultimate family hauler for every road trip and
+                        school run.</div>
+                    <div class="fleet-tag">From $21,800</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="filter-tabs reveal" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;">
+            <button class="filter-btn active" data-filter="all">All Vehicles</button>
+            <button class="filter-btn" data-filter="sedan">Sedans</button>
+            <button class="filter-btn" data-filter="suv">SUVs</button>
+            <button class="filter-btn" data-filter="truck">Trucks</button>
+            <button class="filter-btn" data-filter="minivan">Minivans</button>
+        </div>
+
+        <div class="vehicle-grid" id="vehicleGrid">
+            <div class="vehicle-skeleton"></div>
+            <div class="vehicle-skeleton"></div>
+            <div class="vehicle-skeleton"></div>
+            <div class="vehicle-skeleton"></div>
+            <div class="vehicle-skeleton"></div>
+            <div class="vehicle-skeleton"></div>
+        </div>
+    </section>
+
+    <!-- WHY US -->
+    <section id="why" style="padding: 100px 60px;">
+        <div class="why-section">
+            <div>
+                <div class="section-eyebrow reveal">Why Fleet Rentals USA</div>
+                <h2 class="section-title reveal">Detroit's Most<br>Trusted Rental</h2>
+                <div class="gold-line reveal"></div>
+                <p class="section-body reveal">We've built our reputation one rental at a time — treating every customer
+                    like family and going above and beyond on every experience.</p>
+                <ul class="why-list">
+                    <li class="reveal">
+                        <div class="why-check">✓</div>
+                        <span><strong style="color:var(--white)">Wide Selection</strong> — Small cars to large SUVs and
+                            everything in between, always well-maintained and ready to roll.</span>
+                    </li>
+                    <li class="reveal reveal-delay-1">
+                        <div class="why-check">✓</div>
+                        <span><strong style="color:var(--white)">Flexible Terms</strong> — Daily, weekly, or long-term
+                            monthly plans with no hidden fees and fair pricing.</span>
+                    </li>
+                    <li class="reveal reveal-delay-2">
+                        <div class="why-check">✓</div>
+                        <span><strong style="color:var(--white)">Local &amp; Personal</strong> — Detroit-based team that
+                            knows the city and genuinely cares about your experience.</span>
+                    </li>
+                    <li class="reveal reveal-delay-3">
+                        <div class="why-check">✓</div>
+                        <span><strong style="color:var(--white)">Easy Process</strong> — Fast approvals, minimal
+                            paperwork, and a friendly team to walk you through every step.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="why-visual reveal">
+                <div class="why-box why-box-main">
+                    <div class="rating-shimmer"></div>
+                    <div class="rating-corner tl"></div>
+                    <div class="rating-corner tr"></div>
+                    <div class="rating-corner bl"></div>
+                    <div class="rating-corner br"></div>
+                    <div class="rating-content">
+                        <div class="stars">★ ★ ★ ★ ★</div>
+                        <div class="why-rating">4.5</div>
+                        <div class="why-rating-label">Average Customer Rating · 17+ Reviews</div>
+                    </div>
+                </div>
+                <div class="why-box why-box-accent"><span>★</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="reviews-section" id="reviews">
+        <div class="reviews-section-bg"></div>
+        <div class="reviews-section-overlay"></div>
+        <div class="reviews-section-grain"></div>
+        <div class="reviews-header reveal">
+            <div class="section-eyebrow">Customer Reviews</div>
+            <h2 class="section-title">What Detroit Says</h2>
+            <p class="section-body">Real stories from real customers. We let our reputation speak for itself.</p>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card reveal">
+                <div class="review-glow"></div>
+                <div class="review-stars">★★★★★</div>
+                <div class="review-quote">"</div>
+                <p class="review-text">Ed made me feel very comfortable and worked with me on what I was able to afford.
+                    It felt like dealing with long-time family. I'll definitely be coming back and recommending everyone
+                    I know.</p>
+                <div class="review-author">— Emelin Rivera</div>
+            </div>
+            <div class="review-card reveal reveal-delay-1">
+                <div class="review-glow"></div>
+                <div class="review-stars">★★★★★</div>
+                <div class="review-quote">"</div>
+                <p class="review-text">I've rented from many places in Detroit and never thought I'd find one that's
+                    professional, courteous, and goes above and beyond every single time. Fleet Motors truly exceeded
+                    all my expectations.</p>
+                <div class="review-author">— Verified Customer</div>
+            </div>
+            <div class="review-card reveal reveal-delay-2">
+                <div class="review-glow"></div>
+                <div class="review-stars">★★★★★</div>
+                <div class="review-quote">"</div>
+                <p class="review-text">Good people, easy process — they worked with me and made me feel more like family
+                    than a customer. Definitely recommend Fleet Rentals to anyone in Detroit looking for a great
+                    experience.</p>
+                <div class="review-author">— Verified Customer</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="padding: 100px 60px; max-width: 1200px; margin: 0 auto;">
+        <div style="text-align:center; margin-bottom: 70px;" class="reveal">
+            <div class="section-eyebrow">Get In Touch</div>
+            <h2 class="section-title">Ready to Hit the Road?</h2>
+            <p class="section-body" style="margin: 0 auto; text-align:center;">Stop by our Livernois lot, give us a
+                call, or fill out the form and we'll get back to you fast.</p>
+        </div>
+        <div class="contact-section">
+            <div class="contact-info">
+                <div class="contact-item reveal">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <div class="contact-label">Location</div>
+                        <div class="contact-value">12220 Livernois Ave<br>Detroit, MI 48204</div>
+                    </div>
+                </div>
+                <div class="contact-item reveal reveal-delay-1">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <div class="contact-label">Phone</div>
+                        <div class="contact-value"><a href="tel:3135131333">(313) 513-1333</a></div>
+                    </div>
+                </div>
+                <div class="contact-item reveal reveal-delay-2">
+                    <div class="contact-icon">🕐</div>
+                    <div>
+                        <div class="contact-label">Hours</div>
+                        <div class="contact-value">Mon – Sat: 9:00 AM – 6:00 PM<br>Sun: By Appointment</div>
+                    </div>
+                </div>
+                <div class="contact-item reveal reveal-delay-3">
+                    <div class="contact-icon">🗺️</div>
+                    <div>
+                        <div class="contact-label">Directions</div>
+                        <div class="contact-value">12220 Livernois Ave, Detroit MI 48204</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal reveal-delay-1">
+                <div style="margin-bottom: 24px;">
+                    <div class="section-eyebrow">Quick Inquiry</div>
+                    <h3 style="font-family:'Bebas Neue',sans-serif; font-size: 40px; letter-spacing:1px;">Request a
+                        Vehicle</h3>
+                </div>
+                <div class="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" placeholder="John">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" placeholder="Smith">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" placeholder="(313) 000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Type Needed</label>
+                        <select>
+                            <option value="">Select a category...</option>
+                            <option>Compact / Economy</option>
+                            <option>Sedan</option>
+                            <option>SUV / Crossover</option>
+                            <option>Long-Term Rental</option>
+                            <option>Not Sure – Help Me Choose</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pickup Date</label>
+                            <input type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>Return Date</label>
+                            <input type="date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Additional Notes</label>
+                        <textarea rows="3" placeholder="Budget, special requirements, questions..."></textarea>
+                    </div>
+                    <button class="btn-primary" id="submitBtn"
+                        style="clip-path:none; width:100%; padding: 19px; font-size:15px;">
+                        Submit Inquiry
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <img src="images/logo.png" alt="Fleet Rentals USA" class="footer-logo">
+        <div class="footer-links">
+            <a href="#fleet">Fleet</a>
+            <a href="#why">About</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-copy">© 2025 Fleet Rentals USA · Detroit, MI</div>
+    </footer>
+
+    <script>
+        /* ── LOADING SCREEN ── */
+        const loaderImg = document.querySelector('.loader-logo');
+        const loaderTextLogo = document.getElementById('loader-text-logo');
+        loaderImg.onerror = () => { loaderImg.style.display = 'none'; loaderTextLogo.style.display = 'block'; };
+
+        // Spawn particles
+        const pContainer = document.getElementById('loaderParticles');
+        for (let i = 0; i < 24; i++) {
+            const p = document.createElement('div');
+            p.className = 'loader-particle';
+            const left = Math.random() * 100;
+            const duration = 3 + Math.random() * 5;
+            const delay = Math.random() * 4;
+            const drift = (Math.random() - 0.5) * 200;
+            p.style.cssText = `left:${left}%;--drift:${drift}px;animation-duration:${duration}s;animation-delay:${delay}s;`;
+            pContainer.appendChild(p);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('fade-out');
+            }, 2200);
+        });
+
+        /* ── VEHICLE DATA ── */
+        const vehicles = [
+            { year: 2022, make: 'Chevrolet', model: 'Malibu', trim: 'LT', type: 'sedan', mileage: '28,400', price: '$18,500', trans: 'Automatic', fuel: 'Gas', color: 'Mosaic Black', badge: 'Popular Pick', img: 'images/Mosaic Black.jpg' },
+            { year: 2021, make: 'Dodge', model: 'Charger', trim: 'SXT', type: 'sedan', mileage: '34,100', price: '$24,900', trans: 'Automatic', fuel: 'Gas', color: 'Pitch Black', badge: 'Detroit Favorite', img: 'images/pitch black.jpg' },
+            { year: 2021, make: 'Jeep', model: 'Grand Cherokee', trim: 'Laredo', type: 'suv', mileage: '41,200', price: '$28,900', trans: 'Automatic', fuel: 'Gas', color: 'Granite Crystal', badge: 'Family Ready', img: 'images/Granite Crystal.jpg' },
+            { year: 2020, make: 'Ford', model: 'Explorer', trim: 'XLT', type: 'suv', mileage: '52,800', price: '$26,500', trans: 'Automatic', fuel: 'Gas', color: 'Agate Black', badge: '3rd Row Seating', img: 'images/Agate Black.jpg' },
+            { year: 2022, make: 'Toyota', model: 'Camry', trim: 'SE', type: 'sedan', mileage: '19,700', price: '$22,400', trans: 'Automatic', fuel: 'Gas', color: 'Midnight Black', badge: 'Low Miles', img: 'images/Summit White.jpg' },
+            { year: 2021, make: 'Chevrolet', model: 'Silverado 1500', trim: 'LT', type: 'truck', mileage: '44,300', price: '$33,900', trans: 'Automatic', fuel: 'Gas', color: 'Summit White', badge: 'Work Ready', img: 'images/Summit White.jpg' },
+            { year: 2020, make: 'Chrysler', model: 'Pacifica', trim: 'Touring', type: 'minivan', mileage: '58,200', price: '$21,800', trans: 'Automatic', fuel: 'Gas', color: 'Brilliant Black', badge: '8 Passengers', img: 'images/Brilliant Black.jpg' },
+            { year: 2022, make: 'Honda', model: 'CR-V', trim: 'EX', type: 'suv', mileage: '23,500', price: '$27,200', trans: 'CVT', fuel: 'Gas', color: 'Lunar Silver', badge: 'Fuel Efficient', img: 'images/Lunar Silver.jpg' },
+            { year: 2021, make: 'Ford', model: 'F-150', trim: 'XLT', type: 'truck', mileage: '37,900', price: '$36,500', trans: 'Automatic', fuel: 'Gas', color: 'Iconic Silver', badge: 'Best Seller', img: 'images/Iconic Silver.jpg' },
+            { year: 2020, make: 'Nissan', model: 'Rogue', trim: 'SV', type: 'suv', mileage: '46,700', price: '$19,900', trans: 'CVT', fuel: 'Gas', color: 'Gun Metallic', badge: 'Great Value', img: 'images/Gun Metallic.jpg' },
+            { year: 2021, make: 'Dodge', model: 'Durango', trim: 'SXT', type: 'suv', mileage: '38,600', price: '$31,400', trans: 'Automatic', fuel: 'Gas', color: 'DB Black', badge: 'V6 Power', img: 'images/DB Black.jpg' },
+            { year: 2019, make: 'Cadillac', model: 'CTS', trim: '2.0T Luxury', type: 'sedan', mileage: '47,200', price: '$22,900', trans: 'Automatic', fuel: 'Gas', color: 'Black Raven', badge: 'Detroit Luxury', img: 'images/Black Raven.jpg' },
+        ];
+
+        const fallbackImgs = {
+            sedan: 'https://www.motortrend.com/uploads/2022/11/2023-chevrolet-malibu-1lt-102.jpg',
+            suv: 'https://www.motortrend.com/uploads/2021/09/2022-jeep-grand-cherokee-wl-front-three-quarter.jpg',
+            truck: 'https://www.motortrend.com/uploads/2022/01/2022-ford-f150-front-three-quarter.jpg',
+            minivan: 'https://www.motortrend.com/uploads/2020/09/2021-chrysler-pacifica-touring-l-plus-front-three-quarter.jpg',
+        };
+
+        let activeFilter = 'all';
+
+        /* ── MODAL ── */
+        const modalOverlay = document.getElementById('vehicleModal');
+        const modalClose = document.getElementById('modalClose');
+
+        function openModal(v) {
+            document.getElementById('modalImg').src = v.img;
+            document.getElementById('modalImg').alt = `${v.year} ${v.make} ${v.model}`;
+            document.getElementById('modalImg').onerror = function () { this.src = fallbackImgs[v.type] || fallbackImgs.sedan; };
+            document.getElementById('modalBadge').textContent = v.badge;
+            document.getElementById('modalEyebrow').textContent = `${v.year} · ${v.color}`;
+            document.getElementById('modalTitle').textContent = `${v.make} ${v.model} ${v.trim}`;
+            document.getElementById('modalPrice').textContent = v.price;
+
+            document.getElementById('modalSpecs').innerHTML = `
+      <div class="modal-spec-box"><div class="modal-spec-label">Mileage</div><div class="modal-spec-val">${v.mileage} mi</div></div>
+      <div class="modal-spec-box"><div class="modal-spec-label">Transmission</div><div class="modal-spec-val">${v.trans}</div></div>
+      <div class="modal-spec-box"><div class="modal-spec-label">Fuel</div><div class="modal-spec-val">${v.fuel}</div></div>
+      <div class="modal-spec-box"><div class="modal-spec-label">Type</div><div class="modal-spec-val">${v.type.toUpperCase()}</div></div>
+      <div class="modal-spec-box"><div class="modal-spec-label">Color</div><div class="modal-spec-val">${v.color}</div></div>
+      <div class="modal-spec-box"><div class="modal-spec-label">Year</div><div class="modal-spec-val">${v.year}</div></div>
+    `;
+
+            modalOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        /* ── RENDER VEHICLES ── */
+        function renderVehicles() {
+            const grid = document.getElementById('vehicleGrid');
+            const filtered = activeFilter === 'all' ? vehicles : vehicles.filter(v => v.type === activeFilter);
+
+            grid.innerHTML = filtered.map((v, i) => `
+      <div class="vehicle-card reveal" style="animation-delay:${(i % 3) * 0.1}s" data-index="${vehicles.indexOf(v)}">
+        <div class="vehicle-img-wrap">
+          <img src="${v.img}" alt="${v.year} ${v.make} ${v.model}"
+            onerror="this.src='${fallbackImgs[v.type] || fallbackImgs.suv}'" loading="lazy">
+          <div class="vehicle-badge">${v.badge}</div>
+        </div>
+        <div class="vehicle-body">
+          <div class="vehicle-year">${v.year} · ${v.color}</div>
+          <div class="vehicle-name">${v.make} ${v.model} ${v.trim}</div>
+          <div class="vehicle-specs">
+            <div class="spec-item">🛣️ <span>${v.mileage} mi</span></div>
+            <div class="spec-item">⚙️ <span>${v.trans}</span></div>
+            <div class="spec-item">⛽ <span>${v.fuel}</span></div>
+          </div>
+          <div class="vehicle-price-row">
+            <div>
+              <div class="vehicle-price">${v.price}</div>
+              <div class="vehicle-price-label">Asking Price</div>
+            </div>
+            <button class="vehicle-cta">View Details</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+            // Attach click to each card — open modal
+            grid.querySelectorAll('.vehicle-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const idx = parseInt(card.dataset.index);
+                    openModal(vehicles[idx]);
+                });
+            });
+
+            // Re-observe new cards
+            document.querySelectorAll('.vehicle-card.reveal').forEach(el => observer.observe(el));
+        }
+
+        // Filter tabs
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                renderVehicles();
+            });
+        });
+
+        /* ── SCROLL REVEAL ── */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+            });
+        }, { threshold: 0.06 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        renderVehicles();
+
+        /* ── NAV SCROLL ── */
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            nav.style.background = window.scrollY > 80
+                ? 'rgba(10,10,11,0.97)'
+                : '';
+            nav.style.backdropFilter = window.scrollY > 80 ? 'blur(12px)' : '';
+        });
+
+        /* ── FORM SUBMIT ── */
+        document.getElementById('submitBtn').addEventListener('click', () => {
+            alert("Thanks! We'll be in touch soon. You can also reach us directly at (313) 513-1333.");
+        });
+    </script>
+</body>
+
+</html>
