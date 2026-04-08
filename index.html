@@ -1470,7 +1470,7 @@
             filter: brightness(0.22) saturate(0.6);
             transform: scale(1.06);
             transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                        filter 0.5s ease;
+                filter 0.5s ease;
             z-index: 0;
         }
 
@@ -1480,8 +1480,8 @@
             position: absolute;
             inset: 0;
             background:
-                linear-gradient(to top, rgba(10,10,11,0.95) 0%, rgba(10,10,11,0.4) 60%, transparent 100%),
-                linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 60%);
+                linear-gradient(to top, rgba(10, 10, 11, 0.95) 0%, rgba(10, 10, 11, 0.4) 60%, transparent 100%),
+                linear-gradient(135deg, rgba(201, 168, 76, 0.08) 0%, transparent 60%);
             z-index: 1;
         }
 
@@ -1489,12 +1489,10 @@
         .why-box-main .rating-shimmer {
             position: absolute;
             inset: 0;
-            background: linear-gradient(
-                105deg,
-                transparent 30%,
-                rgba(201, 168, 76, 0.07) 50%,
-                transparent 70%
-            );
+            background: linear-gradient(105deg,
+                    transparent 30%,
+                    rgba(201, 168, 76, 0.07) 50%,
+                    transparent 70%);
             background-size: 200% 100%;
             animation: ratingShimmer 4s ease-in-out infinite;
             z-index: 2;
@@ -1502,9 +1500,17 @@
         }
 
         @keyframes ratingShimmer {
-            0%   { background-position: -200% 0; }
-            60%  { background-position: 200% 0; }
-            100% { background-position: 200% 0; }
+            0% {
+                background-position: -200% 0;
+            }
+
+            60% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
         }
 
         /* Gold border pulse on corners */
@@ -1515,16 +1521,41 @@
             z-index: 3;
             pointer-events: none;
         }
-        .why-box-main .rating-corner.tl { top: 10px; left: 10px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
-        .why-box-main .rating-corner.tr { top: 10px; right: 10px; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
-        .why-box-main .rating-corner.bl { bottom: 10px; left: 10px; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
-        .why-box-main .rating-corner.br { bottom: 10px; right: 10px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+
+        .why-box-main .rating-corner.tl {
+            top: 10px;
+            left: 10px;
+            border-top: 1px solid var(--gold);
+            border-left: 1px solid var(--gold);
+        }
+
+        .why-box-main .rating-corner.tr {
+            top: 10px;
+            right: 10px;
+            border-top: 1px solid var(--gold);
+            border-right: 1px solid var(--gold);
+        }
+
+        .why-box-main .rating-corner.bl {
+            bottom: 10px;
+            left: 10px;
+            border-bottom: 1px solid var(--gold);
+            border-left: 1px solid var(--gold);
+        }
+
+        .why-box-main .rating-corner.br {
+            bottom: 10px;
+            right: 10px;
+            border-bottom: 1px solid var(--gold);
+            border-right: 1px solid var(--gold);
+        }
 
         /* Hover: reveal photo + glow */
         .why-box-main:hover {
             border-color: rgba(201, 168, 76, 0.55);
             box-shadow: 0 0 60px rgba(201, 168, 76, 0.12), 0 0 120px rgba(201, 168, 76, 0.06);
         }
+
         .why-box-main:hover::before {
             transform: scale(1.0);
             filter: brightness(0.32) saturate(0.75);
@@ -1555,13 +1586,22 @@
             content: '';
             position: absolute;
             inset: -40%;
-            background: radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.18) 0%, transparent 70%);
             animation: accentPulse 3s ease-in-out infinite;
         }
 
         @keyframes accentPulse {
-            0%, 100% { transform: scale(0.8); opacity: 0.5; }
-            50%       { transform: scale(1.2); opacity: 1; }
+
+            0%,
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
         }
 
         .why-box-accent:hover {
@@ -1579,17 +1619,24 @@
             z-index: 1;
             animation: starFloat 4s ease-in-out infinite;
             transition: opacity 0.3s, text-shadow 0.3s;
-            text-shadow: 0 0 30px rgba(201,168,76,0.3);
+            text-shadow: 0 0 30px rgba(201, 168, 76, 0.3);
         }
 
         .why-box-accent:hover span {
             opacity: 0.9;
-            text-shadow: 0 0 50px rgba(201,168,76,0.7), 0 0 100px rgba(201,168,76,0.3);
+            text-shadow: 0 0 50px rgba(201, 168, 76, 0.7), 0 0 100px rgba(201, 168, 76, 0.3);
         }
 
         @keyframes starFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50%       { transform: translateY(-6px) rotate(8deg); }
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-6px) rotate(8deg);
+            }
         }
 
         .why-rating {
@@ -1597,7 +1644,7 @@
             font-size: 76px;
             line-height: 1;
             color: var(--gold);
-            text-shadow: 0 0 40px rgba(201,168,76,0.35);
+            text-shadow: 0 0 40px rgba(201, 168, 76, 0.35);
         }
 
         .why-rating-label {
@@ -1618,8 +1665,15 @@
         }
 
         @keyframes starsGlow {
-            0%, 100% { text-shadow: 0 0 8px rgba(201,168,76,0.3); }
-            50%       { text-shadow: 0 0 20px rgba(201,168,76,0.7), 0 0 40px rgba(201,168,76,0.3); }
+
+            0%,
+            100% {
+                text-shadow: 0 0 8px rgba(201, 168, 76, 0.3);
+            }
+
+            50% {
+                text-shadow: 0 0 20px rgba(201, 168, 76, 0.7), 0 0 40px rgba(201, 168, 76, 0.3);
+            }
         }
 
         .why-list {
@@ -1681,8 +1735,8 @@
             position: absolute;
             inset: 0;
             background:
-                linear-gradient(to bottom, rgba(10,10,11,0.85) 0%, rgba(10,10,11,0.55) 50%, rgba(10,10,11,0.9) 100%),
-                linear-gradient(90deg, rgba(10,10,11,0.7) 0%, transparent 30%, transparent 70%, rgba(10,10,11,0.7) 100%);
+                linear-gradient(to bottom, rgba(10, 10, 11, 0.85) 0%, rgba(10, 10, 11, 0.55) 50%, rgba(10, 10, 11, 0.9) 100%),
+                linear-gradient(90deg, rgba(10, 10, 11, 0.7) 0%, transparent 30%, transparent 70%, rgba(10, 10, 11, 0.7) 100%);
             z-index: 1;
         }
 
@@ -1691,11 +1745,11 @@
             position: absolute;
             inset: 0;
             pointer-events: none;
-            background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.04) 3px, rgba(0, 0, 0, 0.04) 4px);
             z-index: 2;
         }
 
-        .reviews-section > * {
+        .reviews-section>* {
             position: relative;
             z-index: 3;
         }
@@ -1721,7 +1775,7 @@
         .review-card {
             background: rgba(22, 22, 24, 0.82);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             padding: 42px 38px;
             position: relative;
             transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s, background 0.35s;
@@ -1732,8 +1786,10 @@
         .review-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 2px;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
             background: linear-gradient(90deg, var(--gold), var(--gold-light));
             transition: width 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
@@ -1741,19 +1797,26 @@
         .review-card::after {
             content: '';
             position: absolute;
-            top: 0; left: 0;
-            width: 2px; height: 0;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 0;
             background: linear-gradient(180deg, var(--gold), transparent);
             transition: height 0.45s 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .review-card:hover::before { width: 100%; }
-        .review-card:hover::after  { height: 60px; }
+        .review-card:hover::before {
+            width: 100%;
+        }
+
+        .review-card:hover::after {
+            height: 60px;
+        }
 
         .review-card:hover {
             border-color: rgba(201, 168, 76, 0.35);
             transform: translateY(-6px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,168,76,0.06);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(201, 168, 76, 0.06);
             background: rgba(22, 22, 24, 0.95);
         }
 
@@ -1761,12 +1824,15 @@
         .review-card .review-glow {
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,168,76,0.06) 0%, transparent 70%);
+            background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
             opacity: 0;
             transition: opacity 0.4s;
             pointer-events: none;
         }
-        .review-card:hover .review-glow { opacity: 1; }
+
+        .review-card:hover .review-glow {
+            opacity: 1;
+        }
 
         .review-quote {
             font-size: 48px;
@@ -1778,7 +1844,9 @@
             transition: opacity 0.3s;
         }
 
-        .review-card:hover .review-quote { opacity: 0.45; }
+        .review-card:hover .review-quote {
+            opacity: 0.45;
+        }
 
         .review-text {
             font-size: 16px;
@@ -1803,7 +1871,7 @@
             font-size: 15px;
             letter-spacing: 3px;
             margin-bottom: 18px;
-            text-shadow: 0 0 10px rgba(201,168,76,0.4);
+            text-shadow: 0 0 10px rgba(201, 168, 76, 0.4);
         }
 
         /* ─────────────────────────────────────────
@@ -2545,7 +2613,7 @@
         /* ── VEHICLE DATA ── */
         const vehicles = [
             { year: 2022, make: 'Chevrolet', model: 'Malibu', trim: 'LT', type: 'sedan', mileage: '28,400', price: '$18,500', trans: 'Automatic', fuel: 'Gas', color: 'Mosaic Black', badge: 'Popular Pick', img: 'images/Mosaic Black.jpg' },
-            { year: 2021, make: 'Dodge', model: 'Charger', trim: 'SXT', type: 'sedan', mileage: '34,100', price: '$24,900', trans: 'Automatic', fuel: 'Gas', color: 'Pitch Black', badge: 'Detroit Favorite', img: 'images/pitch black.jpg' },
+            { year: 2021, make: 'Dodge', model: 'Charger', trim: 'SXT', type: 'sedan', mileage: '34,100', price: '$24,900', trans: 'Automatic', fuel: 'Gas', color: 'Pitch Black', badge: 'Detroit Favorite', img: 'images/Pitch Black.jpg'},
             { year: 2021, make: 'Jeep', model: 'Grand Cherokee', trim: 'Laredo', type: 'suv', mileage: '41,200', price: '$28,900', trans: 'Automatic', fuel: 'Gas', color: 'Granite Crystal', badge: 'Family Ready', img: 'images/Granite Crystal.jpg' },
             { year: 2020, make: 'Ford', model: 'Explorer', trim: 'XLT', type: 'suv', mileage: '52,800', price: '$26,500', trans: 'Automatic', fuel: 'Gas', color: 'Agate Black', badge: '3rd Row Seating', img: 'images/Agate Black.jpg' },
             { year: 2022, make: 'Toyota', model: 'Camry', trim: 'SE', type: 'sedan', mileage: '19,700', price: '$22,400', trans: 'Automatic', fuel: 'Gas', color: 'Midnight Black', badge: 'Low Miles', img: 'images/Summit White.jpg' },
